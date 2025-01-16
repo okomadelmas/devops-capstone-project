@@ -128,7 +128,7 @@ class TestAccountService(TestCase):
         self.assertEqual(response.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
 
     # ADD YOUR TEST CASES HERE ...
-    
+
 ######################################################################
 # TEST LIST ALL ACCOUNTS
 ######################################################################
@@ -153,7 +153,6 @@ class TestAccountService(TestCase):
 
     def test_accous(self):
         """It should Get a single Account not exist"""
-        test_account = self._create_accounts(1)[0]
         response = self.client.get(f"{BASE_URL}/0")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
@@ -193,6 +192,7 @@ class TestAccountService(TestCase):
 ######################################################################
 # TEST Error handlers
 ######################################################################
+
     def test_method_not_allowed(self):
         """It should not allow an illegal method call"""
         resp = self.client.delete(BASE_URL)
