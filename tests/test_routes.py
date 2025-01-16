@@ -20,12 +20,13 @@ DATABASE_URI = os.getenv(
 
 BASE_URL = "/accounts"
 
-HTTPS_ENVIRON = {'wsgi.url_scheme': 'https'}
+HTTPS_ENVIRON = {"wsgi.url_scheme": "https"}
 
 
 ######################################################################
 #  T E S T   C A S E S
 ######################################################################
+
 
 class TestAccountService(TestCase):
     """Account Service Tests"""
@@ -95,9 +96,7 @@ class TestAccountService(TestCase):
         """It should Create a new Account"""
         account = AccountFactory()
         response = self.client.post(
-            BASE_URL,
-            json=account.serialize(),
-            content_type="application/json"
+            BASE_URL, json=account.serialize(), content_type="application/json"
         )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
@@ -122,17 +121,15 @@ class TestAccountService(TestCase):
         """It should not Create an Account when sending the wrong media type"""
         account = AccountFactory()
         response = self.client.post(
-            BASE_URL,
-            json=account.serialize(),
-            content_type="test/html"
+            BASE_URL, json=account.serialize(), content_type="test/html"
         )
         self.assertEqual(response.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
 
     # ADD YOUR TEST CASES HERE ...
 
-######################################################################
-# TEST LIST ALL ACCOUNTS
-######################################################################
+    ######################################################################
+    # TEST LIST ALL ACCOUNTS
+    ######################################################################
 
     def test_get_account_list(self):
         """It should Get a list of Accounts"""
@@ -142,9 +139,9 @@ class TestAccountService(TestCase):
         data = response.get_json()
         self.assertEqual(len(data), 5)
 
-######################################################################
-# TEST LIST SINGLE ACCOUNT
-######################################################################
+    ######################################################################
+    # TEST LIST SINGLE ACCOUNT
+    ######################################################################
 
     def test_read_an_account(self):
         """It should Get a single Account"""
@@ -159,9 +156,9 @@ class TestAccountService(TestCase):
         response = self.client.get(f"{BASE_URL}/0")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-######################################################################
-# TEST UPDATE ACCOUNT
-######################################################################
+    ######################################################################
+    # TEST UPDATE ACCOUNT
+    ######################################################################
 
     def test_update_account(self):
         """It should Update an existing Account"""
@@ -183,9 +180,9 @@ class TestAccountService(TestCase):
         resp = self.client.put(f"{BASE_URL}/0", json=test_account.serialize())
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
-######################################################################
-# TEST DELETE ACCOUNT
-######################################################################
+    ######################################################################
+    # TEST DELETE ACCOUNT
+    ######################################################################
 
     def test_delete_account(self):
         """It should Delete an Account"""
@@ -193,36 +190,35 @@ class TestAccountService(TestCase):
         resp = self.client.delete(f"{BASE_URL}/{account.id}")
         self.assertEqual(resp.status_code, status.HTTP_204_NO_CONTENT)
 
-
-######################################################################
-# TEST Error handlers
-######################################################################
+    ######################################################################
+    # TEST Error handlers
+    ######################################################################
 
     def test_method_not_allowed(self):
         """It should not allow an illegal method call"""
         resp = self.client.delete(BASE_URL)
         self.assertEqual(resp.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
-######################################################################
-# TEST SECURITY HEADER
-######################################################################
+    ######################################################################
+    # TEST SECURITY HEADER
+    ######################################################################
 
     def test_security_headers(self):
         """It should return security headers"""
-        response = self.client.get('/', environ_overrides=HTTPS_ENVIRON)
+        response = self.client.get("/", environ_overrides=HTTPS_ENVIRON)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         headers = {
-            'X-Frame-Options': 'SAMEORIGIN',
-            'X-Content-Type-Options': 'nosniff',
-            'Content-Security-Policy': 'default-src \'self\'; object-src \'none\'',
-            'Referrer-Policy': 'strict-origin-when-cross-origin'
+            "X-Frame-Options": "SAMEORIGIN",
+            "X-Content-Type-Options": "nosniff",
+            "Content-Security-Policy": "default-src 'self'; object-src 'none'",
+            "Referrer-Policy": "strict-origin-when-cross-origin",
         }
         for key, value in headers.items():
             self.assertEqual(response.headers.get(key), value)
 
     def test_cors_security(self):
         """It should return a CORS header"""
-        response = self.client.get('/', environ_overrides=HTTPS_ENVIRON)
+        response = self.client.get("/", environ_overrides=HTTPS_ENVIRON)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         # Check for the presence of the CORS header
-        self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
+        self.assertEqual(response.headers.get("Access-Control-Allow-Origin"), "*")
