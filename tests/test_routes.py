@@ -26,6 +26,7 @@ HTTPS_ENVIRON = {'wsgi.url_scheme': 'https'}
 ######################################################################
 #  T E S T   C A S E S
 ######################################################################
+
 class TestAccountService(TestCase):
     """Account Service Tests"""
 
@@ -132,6 +133,7 @@ class TestAccountService(TestCase):
 ######################################################################
 # TEST LIST ALL ACCOUNTS
 ######################################################################
+
     def test_get_account_list(self):
         """It should Get a list of Accounts"""
         self._create_accounts(5)
@@ -143,6 +145,7 @@ class TestAccountService(TestCase):
 ######################################################################
 # TEST LIST SINGLE ACCOUNT
 ######################################################################
+
     def test_read_an_account(self):
         """It should Get a single Account"""
         test_account = self._create_accounts(1)[0]
@@ -159,6 +162,7 @@ class TestAccountService(TestCase):
 ######################################################################
 # TEST UPDATE ACCOUNT
 ######################################################################
+
     def test_update_account(self):
         """It should Update an existing Account"""
         # create an Account to update
@@ -182,6 +186,7 @@ class TestAccountService(TestCase):
 ######################################################################
 # TEST DELETE ACCOUNT
 ######################################################################
+
     def test_delete_account(self):
         """It should Delete an Account"""
         account = self._create_accounts(1)[0]
